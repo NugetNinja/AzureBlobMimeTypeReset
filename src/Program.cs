@@ -1,22 +1,17 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
+using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
 using CommandLine;
 using Microsoft.AspNetCore.StaticFiles;
-using Microsoft.Azure.Storage;
-using Microsoft.Azure.Storage.Auth;
-using Microsoft.Azure.Storage.Blob;
 
 namespace AzureBlobMimeTypeReset;
 
 class Options
 {
-    [Option('n', Required = true, HelpText = "Storage Account Name")]
-    public string AccountName { get; set; }
-
-    [Option('k', Required = true, HelpText = "Storage Account Key")]
-    public string AccountKey { get; set; }
+    [Option('s', Required = true, HelpText = "Connection String")]
+    public string ConnectionString { get; set; }
 
     [Option('c', Required = true, HelpText = "Blob Container Name")]
     public string ContainerName { get; set; }
@@ -26,7 +21,7 @@ class Program
 {
     public static Options Options { get; set; }
 
-    public static CloudBlobContainer BlobContainer { get; set; }
+    public static BlobContainerClient BlobContainer { get; set; }
 
     static async Task Main(string[] args)
     {
@@ -50,17 +45,20 @@ class Program
             WriteMessage($"[{DateTime.Now}] Updating Mime Type...");
             int affectedFilesCount = 0;
 
-            foreach (var blob in BlobContainer.ListBlobs().OfType<CloudBlockBlob>())
+            await foreach (var blob in BlobContainer.GetBlobsAsync())
             {
-                string extension = Path.GetExtension(blob.Uri.AbsoluteUri).ToLower();
+                string extension = Path.GetExtension(blob.Name)?.ToLower();
                 bool isKnownType = pvd.TryGetContentType(extension, out string mimeType);
                 if (isKnownType)
                 {
-                    if (TrySetContentType(blob, mimeType) != null)
+                    try
                     {
-                        WriteMessage($"[{DateTime.Now}] Updating {blob.Uri.AbsoluteUri} => {mimeType}");
-                        await blob.SetPropertiesAsync();
+                        await SetContentType(blob.Name, mimeType);
                         affectedFilesCount++;
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
                     }
                 }
             }
@@ -71,14 +69,19 @@ class Program
         Console.ReadKey();
     }
 
-    private static CloudBlockBlob TrySetContentType(CloudBlockBlob blob, string contentType)
+    private static async Task SetContentType(string blobName, string contentType)
     {
-        if (blob.Properties.ContentType.ToLower() != contentType)
+        WriteMessage($"[{DateTime.Now}] Updating {blobName} => {contentType}");
+
+        var bc = BlobContainer.GetBlobClient(blobName);
+        var headers = new BlobHttpHeaders
         {
-            blob.Properties.ContentType = contentType;
-            return blob;
-        }
-        return null;
+            // Set the MIME ContentType every time the properties 
+            // are updated or the field will be cleared
+            ContentType = contentType,
+        };
+
+        await bc.SetHttpHeadersAsync(headers);
     }
 
     private static void WriteMessage(string message, ConsoleColor color = ConsoleColor.White, bool resetColor = true)
@@ -91,11 +94,9 @@ class Program
         }
     }
 
-    private static CloudBlobContainer GetBlobContainer()
+    private static BlobContainerClient GetBlobContainer()
     {
-        CloudStorageAccount storageAccount = new CloudStorageAccount(new StorageCredentials(Options.AccountName, Options.AccountKey), true);
-        CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
-        CloudBlobContainer container = blobClient.GetContainerReference(Options.ContainerName);
+        BlobContainerClient container = new(Options.ConnectionString, Options.ContainerName);
         return container;
     }
 }
