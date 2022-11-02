@@ -1,13 +1,17 @@
 # Azure Blob MimeType Reset
 
-Reset Mime Type for file in Azure Blob Storage
+.NET Tool to reset Mime Type for file in Azure Blob Storage
+
+## Install
+
+```bash
+
+```
+
+## Usage
+
+```bash
+azblobmime --connection ***** --container test123
+```
 
 Reference: http://www.thepatrickdavis.com/blob-storage-dont-forget-the-mime/
-
-Added features:
-
-- Use .NET Core instead of .NET Framework
-- Can reset any known types of files, not just images
-- Can use command line parameters
-- Deal with extension name case sensitive
-- Only update incorrect mime types, not every file
