@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
@@ -12,6 +12,8 @@
 		<ToolCommandName>azblobmime</ToolCommandName>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<Title>AzureBlobMimeTypeReset</Title>
 		<Description>.NET Tool for resetting Azure Blob Mime type.</Description>
 		<RepositoryUrl>https://github.com/EdiWang/AzureBlobMimeTypeReset</RepositoryUrl>
 		<PackageTags>Azure, Blob</PackageTags>
