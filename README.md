@@ -5,7 +5,7 @@
 ## Install
 
 ```bash
-
+dotnet tool install -g AzureBlobMimeTypeReset
 ```
 
 ## Usage
