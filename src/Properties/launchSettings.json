@@ -2,7 +2,7 @@
   "profiles": {
     "AzureBlobMimeTypeReset": {
       "commandName": "Project",
-      "commandLineArgs": "-s DefaultEndpointsProtocol=https;AccountName=work996storage;AccountKey=32ZA+unmqToYxvynwz3LyUFc1aoreA8rOlXiOS3E/tSWCURJwty7r94V+Wq5wCqFSgoUOoZjvEtX+AStBDLpzg==;EndpointSuffix=core.windows.net -c work996"
+      "commandLineArgs": "--connection DefaultEndpointsProtocol=https;AccountName=****;AccountKey=****;EndpointSuffix=core.windows.net --container test"
     }
   }
 }

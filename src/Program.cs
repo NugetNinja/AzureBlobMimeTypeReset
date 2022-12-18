@@ -19,6 +19,8 @@ class Options
 
 class Program
 {
+    private static int _faied = 0;
+
     public static Options Options { get; set; }
 
     public static BlobContainerClient BlobContainer { get; set; }
@@ -61,19 +63,28 @@ class Program
                     bool isKnownType = pvd.TryGetContentType(extension, out string mimeType);
                     if (isKnownType && string.Compare(blob.Properties.ContentType, mimeType, StringComparison.OrdinalIgnoreCase) != 0)
                     {
-                        try
+                        if (blob.Properties.AccessTier != AccessTier.Archive)
                         {
-                            await SetContentType(blob.Name, mimeType);
-                            affectedFilesCount++;
+                            try
+                            {
+                                await SetContentType(blob.Name, mimeType);
+                                affectedFilesCount++;
+                            }
+                            catch (Exception e)
+                            {
+                                _faied++;
+                                AnsiConsole.WriteException(e);
+                            }
                         }
-                        catch (Exception e)
+                        else
                         {
-                            AnsiConsole.WriteException(e);
+                            _faied++;
+                            AnsiConsole.Write(new Markup($"[yellow]Skipped download for archived file '{blob.Name}', please move it to cool or hot tier.[/]\n"));
                         }
                     }
                 }
 
-                AnsiConsole.MarkupLine($"Update completed, [green]{affectedFilesCount}[/] file(s) updated.");
+                AnsiConsole.MarkupLine($"Update completed, [green]{affectedFilesCount}[/] file(s) updated, [red]{_faied}[/] file(s) failed.");
             }
             catch (Exception e)
             {
