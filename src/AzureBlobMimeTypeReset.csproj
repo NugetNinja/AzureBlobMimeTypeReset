@@ -1,31 +1,36 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <Version>1.4.0</Version>
-    <TargetFramework>net8.0</TargetFramework>
-    <AssemblyName>azure-blob-mime-type-reset</AssemblyName>
-    <RootNamespace>AzureBlobMimeTypeReset</RootNamespace>
-    <IsTestProject>false</IsTestProject>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <IsPackable>true</IsPackable>
-    <PackAsTool>true</PackAsTool>
-    <ToolCommandName>azure-blob-mime-type-reset</ToolCommandName>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Company>AzureBlobMimeTypeReset</Company>
-    <Product>AzureBlobMimeTypeReset</Product>
-    <Authors>Edi Wang</Authors>
-    <Description>.NET Tool for resetting Azure Blob Mime type.</Description>
-    <PackageId>AzureBlobMimeTypeReset</PackageId>
-    <PackageTags>Azure, Blob</PackageTags>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <RepositoryUrl>https://github.com/EdiWang/AzureBlobMimeTypeReset</RepositoryUrl>
-    <Title>AzureBlobMimeTypeReset</Title>
-  </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="CommandLineParser" Version="2.9.1" />
-    <PackageReference Include="Spectre.Console" Version="0.47.0" />
-    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
-    <PackageReference Include="Microsoft.DotNet.PlatformAbstractions" Version="3.1.6" />
-    <PackageReference Include="Azure.Storage.Blobs" Version="12.19.0" />
-  </ItemGroup>
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <Version>1.4.0</Version>
+        <TargetFramework>net8.0</TargetFramework>
+        <AssemblyName>azure-blob-mime-type-reset</AssemblyName>
+        <RootNamespace>AzureBlobMimeTypeReset</RootNamespace>
+        <IsTestProject>false</IsTestProject>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <IsPackable>true</IsPackable>
+        <PackAsTool>true</PackAsTool>
+        <ToolCommandName>azure-blob-mime-type-reset</ToolCommandName>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Company>AzureBlobMimeTypeReset</Company>
+        <Product>AzureBlobMimeTypeReset</Product>
+        <Authors>Edi Wang</Authors>
+        <Description>.NET Tool for resetting Azure Blob Mime type.</Description>
+        <PackageId>AzureBlobMimeTypeReset</PackageId>
+        <PackageTags>Azure, Blob</PackageTags>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <RepositoryUrl>https://github.com/EdiWang/AzureBlobMimeTypeReset</RepositoryUrl>
+        <Title>AzureBlobMimeTypeReset</Title>
+        <PackageIcon>edi-logo-blue.png</PackageIcon>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="CommandLineParser" Version="2.9.1" />
+        <PackageReference Include="Spectre.Console" Version="0.47.0" />
+        <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
+        <PackageReference Include="Microsoft.DotNet.PlatformAbstractions" Version="3.1.6" />
+        <PackageReference Include="Azure.Storage.Blobs" Version="12.19.0" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="..\README.md" Pack="true" PackagePath="\" />
+        <None Include="..\img\edi-logo-blue.png" Pack="true" PackagePath="\" />
+    </ItemGroup>
 </Project>
